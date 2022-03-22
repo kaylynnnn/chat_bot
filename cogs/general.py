@@ -1,4 +1,5 @@
 from io import BytesIO
+import textwrap
 import time
 
 import discord
@@ -37,12 +38,12 @@ class General(commands.Cog):
         await ctx.trigger_typing()
         type_end = time.perf_counter()
 
-        embed = discord.Embed(
-            description=f'''DB Latency: {round((db_end - db_start) * 1000, 2)} ms
-            Round Trip Latency: {round((type_start - type_end) * 1000, 2)} ms
-            Heartbeat Latency: {round(self.bot.latency * 1000, 2)} ms
-            '''
-        )
+        message = f'''DB Latency: {round((db_end - db_start) * 1000, 2)} ms
+        Round Trip Latency: {round((type_end - type_start) * 1000, 2)} ms
+        Heartbeat Latency: {round(self.bot.latency * 1000, 2)} ms
+        '''
+
+        embed = discord.Embed(description=textwrap.dedent(message))
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['color'])
