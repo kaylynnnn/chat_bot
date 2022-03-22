@@ -71,7 +71,12 @@ class Admin(commands.Cog):
         # I don't really have to worry about it so much.
         os.remove('./to_typecheck.py')
 
-        data = json.loads(result)
+        try:
+            data = json.loads(result)
+        except json.JSONDecodeError:
+            await ctx.author.send(result)
+            return
+
         diagnostics = data['generalDiagnostics']
         ret = []
         for element in diagnostics:
