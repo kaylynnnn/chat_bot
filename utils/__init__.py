@@ -1,8 +1,10 @@
 import asyncio
-from typing import Any, Awaitable, Callable, ParamSpec, TypeVar
+from typing import Awaitable, Callable, ParamSpec, TypeVar
+
+from .converters import *
 
 
-__all__ = ('to_thread',)
+__all__ = ('to_thread', 'RoleConverter',)
 
 
 T = TypeVar('T')
