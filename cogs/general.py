@@ -1,4 +1,5 @@
 from io import BytesIO
+import time
 
 import discord
 from deps import Bot, Context
@@ -25,11 +26,27 @@ class General(commands.Cog):
         return buffer
 
     @commands.command()
-    async def ping(self, ctx: Context[Bot]):
+    async def ping(self, ctx: Context):
         """Gets the bot's latency."""
+        async with self.bot.pool.acquire() as conn:
+            db_start = time.perf_counter()
+            await conn.execute('SELECT 1;')
+            db_end = time.perf_counter()
+
+        type_start = time.perf_counter()
+        await ctx.trigger_typing()
+        type_end = time.perf_counter()
+
+        embed = discord.Embed(
+            description=f'''DB Latency: {round(db_end - db_start * 1000, 2)} ms
+            Round Trip Latency: {round(type_start - type_end * 1000, 2)} ms
+            Heartbeat Latency: {round(self.bot.latency * 1000, 2)} ms
+            '''
+        )
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=['color'])
-    async def colour(self, ctx: Context[Bot], *, colour: discord.Colour):
+    async def colour(self, ctx: Context, *, colour: discord.Colour):
         """Shows a representation of a given colour.
         Format could be the following:
         Name: `Red`

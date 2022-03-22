@@ -11,7 +11,7 @@ class Misc(commands.Cog):
         self.bot = bot
 
     @commands.command(aliases=['src'])
-    async def source(self, ctx: Context[Bot]):
+    async def source(self, ctx: Context):
         """Provides a link with the source code of the bot."""
         url = 'https://github.com/okaykallum/chat_bot'
         await ctx.send(f'Here\'s a link with the source of the bot:\n<{url}>')

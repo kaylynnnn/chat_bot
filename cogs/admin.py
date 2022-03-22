@@ -41,7 +41,7 @@ class Admin(commands.Cog):
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
 
-    async def cog_check(self, ctx: Context[Bot]) -> bool:
+    async def cog_check(self, ctx: Context) -> bool:
         check = await self.bot.is_owner(ctx.author)
         if not check:
             raise commands.NotOwner
@@ -56,7 +56,7 @@ class Admin(commands.Cog):
         await self.bot.user.edit(avatar=await user.avatar.read())
 
     @commands.command()
-    async def pyright(self, ctx: Context[Bot], *, code: CodeblockConverter):
+    async def pyright(self, ctx: Context, *, code: CodeblockConverter):
         """Uses Pyright to do typechecking."""
         await ctx.trigger_typing()
         block = cast(Codeblock, code)
