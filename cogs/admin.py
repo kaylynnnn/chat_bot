@@ -60,11 +60,11 @@ class Admin(commands.Cog):
         await ctx.trigger_typing()
         block = cast(Codeblock, code)
 
-        with open('to_typecheck.py', 'w') as fh:
+        with open('./to_typecheck.py', 'w') as fh:
             fh.write(block.content)
 
         # As far as I know there's no facing API for this, so here we go.
-        result = await run_shell('pyright --outputjson to_typecheck.py')
+        result = await run_shell('pyright --outputjson ./to_typecheck.py')
 
         # This is blocking, but since I don't realistically believe
         # I'll ever surpass a big enough file size (Especially with discord limits)
