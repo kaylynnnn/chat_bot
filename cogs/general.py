@@ -24,8 +24,12 @@ class General(commands.Cog):
         buffer.seek(0)
         return buffer
 
+    @commands.command()
+    async def ping(self, ctx: Context[Bot]):
+        """Gets the bot's latency."""
+
     @commands.command(aliases=['color'])
-    async def colour(self, ctx: Context[Bot], colour: discord.Colour):
+    async def colour(self, ctx: Context[Bot], *, colour: discord.Colour):
         """Shows a representation of a given colour.
         Format could be the following:
         Name: `Red`
