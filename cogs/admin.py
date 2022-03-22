@@ -28,7 +28,7 @@ class Codeblock(NamedTuple):
 
 
 class CodeblockConverter(commands.Converter[Codeblock]):
-    async def convert(self, ctx: Context[Bot], argument: str) -> Codeblock:
+    async def convert(self, ctx: Context, argument: str) -> Codeblock:
         result = codeblock_converter(argument)
         return Codeblock(result.language, result.content)
 
