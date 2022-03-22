@@ -1,4 +1,3 @@
-import discord
 from deps import Bot, Context
 from discord.ext import commands
 

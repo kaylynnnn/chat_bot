@@ -4,7 +4,6 @@ import os
 from typing import NamedTuple, cast
 
 import discord
-
 from deps import Bot, Context
 from discord.ext import commands, tasks
 from jishaku.codeblocks import codeblock_converter

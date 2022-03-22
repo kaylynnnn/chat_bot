@@ -1,6 +1,6 @@
-from io import BytesIO
 import textwrap
 import time
+from io import BytesIO
 
 import discord
 from deps import Bot, Context

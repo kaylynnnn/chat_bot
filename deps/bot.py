@@ -10,7 +10,6 @@ import discord
 import donphan
 from discord.ext import commands
 from donphan import MaybeAcquire
-
 from models import Prefix
 
 os.environ['JISHAKU_NO_UNDERSCORE'] = 'True'
