@@ -18,10 +18,9 @@ class ErrorHandler(commands.Cog):
 
         if isinstance(error, commands.NotOwner):
             await ctx.send('\N{CROSS MARK}')
-            return
-
-        if isinstance(error, commands.BadColourArgument):
+        elif isinstance(error, commands.BadColourArgument):
             await ctx.send(f'`{error.argument}` is an invalid colour.')
-            return
-
-        raise error
+        elif isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(str(error))
+        else:
+            raise error
