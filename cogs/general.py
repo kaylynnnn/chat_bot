@@ -38,8 +38,8 @@ class General(commands.Cog):
         type_end = time.perf_counter()
 
         embed = discord.Embed(
-            description=f'''DB Latency: {round(db_end - db_start * 1000, 2)} ms
-            Round Trip Latency: {round(type_start - type_end * 1000, 2)} ms
+            description=f'''DB Latency: {round((db_end - db_start) * 1000, 2)} ms
+            Round Trip Latency: {round((type_start - type_end) * 1000, 2)} ms
             Heartbeat Latency: {round(self.bot.latency * 1000, 2)} ms
             '''
         )
