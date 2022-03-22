@@ -1,12 +1,13 @@
-from typing import Generic, TypeVar
+from __future__ import annotations
 
+from typing import TYPE_CHECKING
 from discord.ext import commands
+
+if TYPE_CHECKING:
+    from deps import Bot
 
 __all__ = ('Context',)
 
 
-BotT = TypeVar('BotT', bound=commands.Bot | commands.AutoShardedBot, covariant=True)
-
-
-class Context(commands.Context, Generic[BotT]):
-    pass
+class Context(commands.Context):
+    bot: Bot
