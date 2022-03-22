@@ -1,0 +1,5 @@
+git+https://github.com/Rapptz/discord.py.git
+git+https://github.com/Gorialis/jishaku.git
+donphan==4.9.2
+toml==0.10.2
+Pillow==9.0.1
