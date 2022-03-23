@@ -26,10 +26,9 @@ class Codeblock(NamedTuple):
     language: str
     content: str
 
-
-class CodeblockConverter(commands.Converter[Codeblock]):
-    async def convert(self, ctx: Context, argument: str) -> Codeblock:
-        result = codeblock_converter(argument)
+    @classmethod
+    async def convert(cls, _: Context, arg: str):
+        result = codeblock_converter(arg)
         return Codeblock(result.language, result.content)
 
 
@@ -56,13 +55,12 @@ class Admin(commands.Cog):
         await self.bot.user.edit(avatar=await user.avatar.read())
 
     @commands.command()
-    async def pyright(self, ctx: Context, *, code: CodeblockConverter):
+    async def pyright(self, ctx: Context, *, code: Codeblock):
         """Uses Pyright to do typechecking."""
         await ctx.trigger_typing()
-        block = cast(Codeblock, code)
 
         with open('./to_typecheck.py', 'w') as fh:
-            fh.write(block.content)
+            fh.write(code.content)
 
         # As far as I know there's no facing API for this, so here we go.
         # Also a hardcoded value here, but oh well.
