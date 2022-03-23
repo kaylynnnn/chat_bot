@@ -2,9 +2,10 @@ import asyncio
 from typing import Awaitable, Callable, ParamSpec, TypeVar
 
 from .converters import *
+from .owoify import *
 
 
-__all__ = ('to_thread', 'RoleConverter',)
+__all__ = ('to_thread', 'RoleConverter', 'owoify_text', 'owoify_embed',)
 
 
 T = TypeVar('T')
