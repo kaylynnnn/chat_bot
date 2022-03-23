@@ -1,6 +1,7 @@
 import asyncio
 import json
 import os
+import platform
 from typing import NamedTuple, cast
 
 import discord
@@ -65,7 +66,8 @@ class Admin(commands.Cog):
 
         # As far as I know there's no facing API for this, so here we go.
         # Also a hardcoded value here, but oh well.
-        result, err = await run_shell('/home/kal/.local/bin/pyright --outputjson ./to_typecheck.py')
+        pyright_cmd = '/home/kal/.local/bin/pyright' if platform.system() == 'Linux' else 'pyright'
+        result, err = await run_shell(f'{pyright_cmd} --outputjson ./to_typecheck.py')
 
         # This is blocking, but since I don't realistically believe
         # I'll ever surpass a big enough file size (Especially with discord limits)
