@@ -47,7 +47,7 @@ async def get_prefix(bot: Bot, message: discord.Message) -> list[str]:
 
 
 class HelpCommand(commands.MinimalHelpCommand):
-    async def get_destination(self) -> discord.abc.Messageable:
+    def get_destination(self) -> discord.abc.Messageable:
         return self.context
 
 
