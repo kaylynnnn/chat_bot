@@ -36,7 +36,9 @@ async def get_prefix(bot: Bot, message: discord.Message) -> list[str]:
     ret: list[str] = bot.prefix_cache.get(message.guild.id, [])
     if not ret:
         async with bot.db as conn:
-            records: Iterable[asyncpg.Record] = await Prefix.fetch(conn, guild=message.guild.id)
+            records: Iterable[asyncpg.Record] = await Prefix.fetch(
+                conn, guild=message.guild.id
+            )
 
         ret: list[str] = [r['prefix'] for r in records]
         bot.prefix_cache[message.guild.id] = ret
@@ -61,7 +63,7 @@ class Bot(commands.Bot):
             command_prefix=get_prefix,
             intents=INTENTS,
             owner_ids={671777334906454026, 766953372309127168},
-            help_command=HelpCommand()
+            help_command=HelpCommand(),
         )
         self.config = config
         self._once_ready = False
