@@ -47,6 +47,7 @@ class General(commands.Cog):
             values.append(('Roles', role_fmt))
 
         embed = discord.Embed(title=f'Information for {user.display_name}')
+        embed.set_thumbnail(url=user.display_avatar)
         for name, value in values:
             embed.add_field(name=name, value=value)
 
