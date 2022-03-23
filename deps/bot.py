@@ -10,6 +10,8 @@ import discord
 import donphan
 from discord.ext import commands
 from donphan import MaybeAcquire
+
+from .context import Context
 from models import Guild, Prefix
 
 os.environ['JISHAKU_NO_UNDERSCORE'] = 'True'
@@ -89,6 +91,9 @@ class Bot(commands.Bot):
             self._once_ready = True
 
         print(f'Ready! Logged in as {self.user} ({self.user.id})')
+
+    async def get_context(self, message: discord.Message, *, cls=Context):
+        return await super().get_context(message, cls=cls)
 
     def run(self, token: str | None = None, *, reconnect: bool = True) -> None:
         super().run(token or self.config['token'], reconnect=reconnect)
