@@ -32,7 +32,7 @@ class Context(commands.Context):
             if content:
                 content = owoify_text(content)
 
-            embed: discord.Embed | None = kwargs.pop('embed')
+            embed: discord.Embed | None = kwargs.pop('embed', None)
             if embed:
                 embed = owoify_embed(embed)
                 kwargs['embed'] = embed
