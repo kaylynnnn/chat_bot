@@ -15,13 +15,14 @@ METHODS = {
 
 
 OWO_REPL = {
-    r"\By": "wy",
-    r"l": "w",
-    r"er": "ew",
-    r"row": "rowo",
-    r"rus": "ruwus",
-    r"the": "thuwu",
-    r"thi": "di"
+    r'\By': 'wy',
+    r'l': 'w',
+    r'er': 'ew',
+    r'row': 'rowo',
+    r'rus': 'ruwus',
+    r'the': 'thuwu',
+    r'thi': 'di',
+    r'pr': 'pw',
 }
 
 
@@ -40,7 +41,7 @@ def owoify_text(text: str) -> str:
     for sub, repl in OWO_REPL.items():
         text = _maintain_case_replace(sub, repl, text)
 
-    return text + " " + random.choice(("owo", "uwu"))
+    return text + ' ' + random.choice(('owo', 'uwu'))
 
 
 def owoify_embed(embed: discord.Embed) -> discord.Embed:
