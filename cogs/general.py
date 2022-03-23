@@ -27,7 +27,9 @@ class General(commands.Cog):
         return buffer
 
     @commands.command()
-    async def userinfo(self, ctx: Context, target: discord.Member | discord.User | None):
+    async def userinfo(
+        self, ctx: Context, target: discord.Member | discord.User | None
+    ):
         """Get information on a given target.
         Target being a user."""
         user = target or ctx.author

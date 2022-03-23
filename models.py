@@ -1,7 +1,10 @@
 from donphan import Table, Column, SQLType
 
 
-__all__ = ('Prefix', 'Guild',)
+__all__ = (
+    'Prefix',
+    'Guild',
+)
 
 
 class Guild(Table):
@@ -10,5 +13,7 @@ class Guild(Table):
 
 
 class Prefix(Table):
-    guild: Column[SQLType.BigInt] = Column(unique=True, nullable=False, references=Guild.guild)
+    guild: Column[SQLType.BigInt] = Column(
+        unique=True, nullable=False, references=Guild.guild
+    )
     prefix: Column[SQLType.Text] = Column(unique=True, nullable=False)

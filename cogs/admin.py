@@ -2,7 +2,7 @@ import asyncio
 import json
 import os
 import platform
-from typing import NamedTuple, cast
+from typing import NamedTuple
 
 import discord
 from deps import Bot, Context
@@ -12,9 +12,7 @@ from jishaku.codeblocks import codeblock_converter
 
 async def run_shell(cmd: str) -> tuple[str, str]:
     proc = await asyncio.create_subprocess_shell(
-        cmd,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE
+        cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
     )
 
     stdout, stderr = await proc.communicate()
@@ -64,7 +62,11 @@ class Admin(commands.Cog):
 
         # As far as I know there's no facing API for this, so here we go.
         # Also a hardcoded value here, but oh well.
-        pyright_cmd = '/home/kal/.local/bin/pyright' if platform.system() == 'Linux' else 'pyright'
+        pyright_cmd = (
+            '/home/kal/.local/bin/pyright'
+            if platform.system() == 'Linux'
+            else 'pyright'
+        )
         result, err = await run_shell(f'{pyright_cmd} --outputjson ./to_typecheck.py')
 
         # This is blocking, but since I don't realistically believe
