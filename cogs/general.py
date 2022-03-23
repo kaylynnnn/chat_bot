@@ -27,10 +27,30 @@ class General(commands.Cog):
         return buffer
 
     @commands.command()
-    async def userinfo(self, ctx: Context, target: discord.User | None):
+    async def userinfo(self, ctx: Context, target: discord.Member | discord.User | None):
         """Get information on a given target.
         Target being a user."""
         user = target or ctx.author
+
+        values: list[tuple[str, str]] = [('ID', f'{user.id}')]
+
+        created_at_fmt = discord.utils.format_dt(user.created_at, 'R')
+        values.append(('Created at', created_at_fmt))
+
+        if isinstance(user, discord.Member):
+            joined_at_fmt = discord.utils.format_dt(user.joined_at, 'R')  # type: ignore
+            values.append(('Joined at', joined_at_fmt))
+
+            roles = user.roles[1:]
+            roles.reverse()
+            role_fmt = ' '.join(role.mention for role in roles)
+            values.append(('Roles', role_fmt))
+
+        embed = discord.Embed(title=f'Information for {user.display_name}')
+        for name, value in values:
+            embed.add_field(name=name, value=value)
+
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def ping(self, ctx: Context):
