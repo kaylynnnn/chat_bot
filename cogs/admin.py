@@ -5,20 +5,20 @@ from typing import NamedTuple, cast
 
 import discord
 from deps import Bot, Context
-from discord.ext import commands, tasks
+from discord.ext import commands
 from jishaku.codeblocks import codeblock_converter
 
 
-async def run_shell(cmd: str) -> str:
+async def run_shell(cmd: str) -> tuple[str, str]:
     proc = await asyncio.create_subprocess_shell(
         cmd,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE
     )
 
-    stdout, _ = await proc.communicate()
+    stdout, stderr = await proc.communicate()
 
-    return stdout.decode()
+    return stdout.decode(), stderr.decode()
 
 
 class Codeblock(NamedTuple):
@@ -64,7 +64,8 @@ class Admin(commands.Cog):
             fh.write(block.content)
 
         # As far as I know there's no facing API for this, so here we go.
-        result = await run_shell('pyright --outputjson ./to_typecheck.py')
+        # Also a hardcoded value here, but oh well.
+        result, err = await run_shell('/home/kal/.local/bin/pyright --outputjson ./to_typecheck.py')
 
         # This is blocking, but since I don't realistically believe
         # I'll ever surpass a big enough file size (Especially with discord limits)
@@ -74,7 +75,7 @@ class Admin(commands.Cog):
         try:
             data = json.loads(result)
         except json.JSONDecodeError:
-            await ctx.author.send(result)
+            await ctx.send('Something went wrong hehe')
             return
 
         diagnostics = data['generalDiagnostics']
