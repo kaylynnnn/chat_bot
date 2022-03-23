@@ -1,8 +1,12 @@
-from lib2to3.pytree import convert
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 import discord
-from deps import Context
 from discord.ext import commands
+
+if TYPE_CHECKING:
+    from deps import Context
 
 
 __all__ = ('RoleConverter',)

@@ -7,7 +7,7 @@ import discord
 from discord.ext import commands
 from models import Guild
 
-from utils.owoify import owoify_embed, owoify_text
+from utils import owoify_embed, owoify_text
 
 if TYPE_CHECKING:
     from deps import Bot
