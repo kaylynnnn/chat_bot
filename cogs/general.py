@@ -27,6 +27,12 @@ class General(commands.Cog):
         return buffer
 
     @commands.command()
+    async def userinfo(self, ctx: Context, target: discord.User | None):
+        """Get information on a given target.
+        Target being a user."""
+        user = target or ctx.author
+
+    @commands.command()
     async def ping(self, ctx: Context):
         """Gets the bot's latency."""
         async with self.bot.pool.acquire() as conn:
