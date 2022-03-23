@@ -10,7 +10,7 @@ import discord
 import donphan
 from discord.ext import commands
 from donphan import MaybeAcquire
-from models import Prefix
+from models import Guilds, Prefix
 
 os.environ['JISHAKU_NO_UNDERSCORE'] = 'True'
 os.environ['JISHAKU_NO_DM_TRACEBACK'] = 'True'
@@ -75,6 +75,7 @@ class Bot(commands.Bot):
 
         async with self.db as conn:
             await Prefix.create(conn, if_not_exists=True)
+            await Guilds.create(conn, if_not_exists=True)
 
     async def on_once_ready(self):
         await self.change_presence(
