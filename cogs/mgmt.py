@@ -18,9 +18,7 @@ class Management(commands.Cog):
 
     async def get_prefixes(self, guild: discord.Guild) -> list[str]:
         async with self.bot.db as conn:
-            records: Iterable[asyncpg.Record] = await Prefix.fetch(
-                conn, guild=guild.id
-            )
+            records: Iterable[asyncpg.Record] = await Prefix.fetch(conn, guild=guild.id)
         return [r['prefix'] for r in records]
 
     @commands.group(invoke_without_command=True)
