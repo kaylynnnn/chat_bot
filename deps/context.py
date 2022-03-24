@@ -27,7 +27,9 @@ class Context(commands.Context):
 
         return record['owoify']
 
-    async def send(self, content: str | None = None, dont_owo: bool = False, **kwargs) -> discord.Message:
+    async def send(
+        self, content: str | None = None, dont_owo: bool = False, **kwargs
+    ) -> discord.Message:
         if not dont_owo:
             if await self._check_owoify(self.guild):
                 content = owoify_text(content) if content else None

@@ -57,6 +57,7 @@ class Bot(commands.Bot):
     session: aiohttp.ClientSession
     pool: asyncpg.Pool
     db: MaybeAcquire
+    _kal_av_ash: int
 
     def __init__(self, *, config: dict[str, str]):
         super().__init__(
@@ -86,11 +87,19 @@ class Bot(commands.Bot):
             await Prefix.create(conn, if_not_exists=True)
             await Guild.create(conn, if_not_exists=True)
 
+    async def try_user(self, user: int) -> discord.User:
+        return self.get_user(user) or await self.fetch_user(user)
+
+    @property
+    async def kal(self) -> discord.User:
+        return await self.try_user(671777334906454026)
+
     async def on_once_ready(self):
         await self.change_presence(
             activity=discord.Game('this bot sucks'),
             status=discord.Status.dnd,
         )
+        self._kal_av_ash = hash((await self.kal).avatar)
 
     async def on_ready(self):
         if not self._once_ready:
