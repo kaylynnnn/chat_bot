@@ -5,7 +5,7 @@ import discord
 from deps import Bot, Context
 from discord.ext import commands
 
-from models import Prefix
+from models import Guild, Prefix
 
 
 async def setup(bot: Bot):
@@ -20,6 +20,18 @@ class Management(commands.Cog):
         async with self.bot.db as conn:
             records: Iterable[asyncpg.Record] = await Prefix.fetch(conn, guild=guild.id)
         return [r['prefix'] for r in records]
+
+    @commands.command()
+    @commands.has_guild_permissions(manage_guild=True)
+    async def owoify(self, ctx: Context, value: bool):
+        """Enable or disable owoify in current guild."""
+        async with self.bot.db as conn:
+            try:
+                await Guild.insert(conn, guild=ctx.guild.id, owoify=value)
+            except asyncpg.UniqueViolationError:
+                await Guild.update_where(conn, 'guild = $1', ctx.guild.id, owoify=value)
+
+        await ctx.send('\U0001f44c')
 
     @commands.group(invoke_without_command=True)
     @commands.guild_only()
