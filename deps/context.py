@@ -36,4 +36,4 @@ class Context(commands.Context):
                 embed = owoify_embed(embed)
                 kwargs['embed'] = embed
 
-        await super().send(content, **kwargs)
+        return await super().send(content, **kwargs)
