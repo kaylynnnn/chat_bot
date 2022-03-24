@@ -28,14 +28,12 @@ class Context(commands.Context):
         return record['owoify']
 
     async def send(self, content: str | None = None, dont_owo: bool = False, **kwargs):
-        if not dont_owo:
-            if await self._check_owoify(self.guild):
-                if content:
-                    content = owoify_text(content)
+        if await self._check_owoify(self.guild) or not dont_owo:
+            content = owoify_text(content) if content else None
 
-                embed: discord.Embed | None = kwargs.pop('embed', None)
-                if embed:
-                    embed = owoify_embed(embed)
-                    kwargs['embed'] = embed
+            embed: discord.Embed | None = kwargs.pop('embed', None)
+            if embed:
+                embed = owoify_embed(embed)
+                kwargs['embed'] = embed
 
         await super().send(content, **kwargs)
