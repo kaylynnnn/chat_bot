@@ -23,5 +23,9 @@ class ErrorHandler(commands.Cog):
             await ctx.send(f'`{error.argument}` is an invalid colour.')
         elif isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(str(error))
+        elif isinstance(error, commands.MissingPermissions):
+            await ctx.send(str(error))
+        elif isinstance(error, commands.BotMissingPermissions):
+            await ctx.send(str(error))
         else:
             raise error
