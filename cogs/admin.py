@@ -47,7 +47,7 @@ class Admin(commands.Cog):
     @commands.Cog.listener('on_user_update')
     async def change_to_kal_avatar(self, _: discord.User, user: discord.User):
         """Switches to kal's avatar any time they change it."""
-        if user.id != 671777334906454026 or hash(user.avatar) == self.bot._kal_av_ash:
+        if user.id != 671777334906454026 or hash(user.avatar) == self.bot._kal_av_hash:
             return
 
         await self.bot.user.edit(avatar=await user.avatar.read())

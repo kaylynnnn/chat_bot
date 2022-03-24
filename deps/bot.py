@@ -57,7 +57,7 @@ class Bot(commands.Bot):
     session: aiohttp.ClientSession
     pool: asyncpg.Pool
     db: MaybeAcquire
-    _kal_av_ash: int
+    _kal_av_hash: int
 
     def __init__(self, *, config: dict[str, str]):
         super().__init__(
@@ -99,7 +99,7 @@ class Bot(commands.Bot):
             activity=discord.Game('this bot sucks'),
             status=discord.Status.dnd,
         )
-        self._kal_av_ash = hash((await self.kal).avatar)
+        self._kal_av_hash = hash((await self.kal).avatar)
 
     async def on_ready(self):
         if not self._once_ready:
