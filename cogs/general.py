@@ -27,6 +27,26 @@ class General(commands.Cog):
         return buffer
 
     @commands.command()
+    async def serverinfo(self, ctx: Context):
+        """Gets information on the current guild."""
+        created_at_fmt = discord.utils.format_dt(ctx.guild.created_at)
+
+        values: list[tuple[str, str | int]] = [
+            ('ID', ctx.guild.id),
+            ('Role Count', len(ctx.guild.roles)),
+            ('Member Count', ctx.guild.member_count or 'Unavailable'),
+            ('Created at', created_at_fmt),
+        ]
+
+        embed = discord.Embed()
+        embed.set_thumbnail(url=ctx.guild.icon.url)
+        embed.set_image(url=ctx.guild.banner.url)
+        for name, value in values:
+            embed.add_field(name=name, value=value, inline=False)
+
+        await ctx.send(embed=embed)
+
+    @commands.command()
     async def userinfo(
         self, ctx: Context, target: discord.Member | discord.User | None
     ):
@@ -34,7 +54,7 @@ class General(commands.Cog):
         Target being a user."""
         user = target or ctx.author
 
-        values: list[tuple[str, str]] = [('ID', f'{user.id}')]
+        values: list[tuple[str, str | int]] = [('ID', user.id)]
 
         created_at_fmt = discord.utils.format_dt(user.created_at, 'R')
         values.append(('Created at', created_at_fmt))
