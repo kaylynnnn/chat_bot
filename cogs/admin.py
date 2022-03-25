@@ -27,7 +27,7 @@ class Codeblock(NamedTuple):
     @classmethod
     async def convert(cls, _: Context, arg: str):
         result = codeblock_converter(arg)
-        return Codeblock(result.language, result.content)
+        return cls(language=result.language, content=result.content)
 
 
 async def setup(bot: Bot):
