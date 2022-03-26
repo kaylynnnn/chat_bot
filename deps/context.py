@@ -18,14 +18,14 @@ __all__ = ('Context',)
 class Context(commands.Context):
     bot: Bot
 
-    async def _check_owoify(self, guild: discord.Guild | None):
+    async def _check_owoify(self, guild: discord.Guild | None) -> bool:
         if not guild:
             return False
 
         async with self.bot.db as conn:
             record: asyncpg.Record = await Guild.fetch_row(conn, guild=guild.id)
 
-        return record['owoify']
+        return record['owoify'] if record else False
 
     async def send(
         self, content: str | None = None, dont_owo: bool = False, **kwargs
