@@ -58,6 +58,8 @@ class Management(commands.Cog):
 
         async with self.bot.db as conn:
             await Prefix.insert(conn, guild=ctx.guild.id, prefix=prefix)
+        
+        self.bot.prefix_cache[ctx.guild.id].append(prefix)
 
         await ctx.send('\U0001f44c')
 
@@ -73,5 +75,7 @@ class Management(commands.Cog):
 
         async with self.bot.db as conn:
             await Prefix.delete(conn, guild=ctx.guild.id, prefix=prefix)
+        
+        self.bot.prefix_cache[ctx.guild.id].remove(prefix)
 
         await ctx.send('\U0001F44C')
