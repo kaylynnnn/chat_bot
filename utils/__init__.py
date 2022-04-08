@@ -3,6 +3,7 @@ from typing import Awaitable, Callable, ParamSpec, TypeVar
 
 from .converters import *
 from .owoify import *
+from .database import Database
 
 
 __all__ = (
@@ -10,6 +11,7 @@ __all__ = (
     'RoleConverter',
     'owoify_text',
     'owoify_embed',
+    'Database',
 )
 
 
