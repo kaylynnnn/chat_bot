@@ -16,21 +16,11 @@ class Management(commands.Cog):
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
 
-    async def get_prefixes(self, guild: discord.Guild) -> list[str]:
-        async with self.bot.db as conn:
-            records: Iterable[asyncpg.Record] = await Prefix.fetch(conn, guild=guild.id)
-        return [r['prefix'] for r in records]
-
     @commands.command()
     @commands.has_guild_permissions(manage_guild=True)
     async def owoify(self, ctx: Context, value: bool):
         """Enable or disable owoify in current guild."""
-        async with self.bot.db as conn:
-            try:
-                await Guild.insert(conn, guild=ctx.guild.id, owoify=value)
-            except asyncpg.UniqueViolationError:
-                await Guild.update_where(conn, 'guild = $1', ctx.guild.id, owoify=value)
-
+        await self.bot.db.set_owoify(ctx.guild.id, value)
         await ctx.send('\U0001f44c')
 
     @commands.group(invoke_without_command=True)
@@ -47,19 +37,15 @@ class Management(commands.Cog):
     @commands.has_guild_permissions(manage_guild=True)
     async def prefix_add(self, ctx: Context, prefix: str):
         """Adds a new prefix to the guild."""
-        prefixes = await self.get_prefixes(ctx.guild)  # type: ignore
-        if prefix in prefixes:
-            await ctx.send('This is already a prefix.')
-            return
-
         if prefix.startswith((f'<@!{self.bot.user.id}>', f'<@{self.bot.user.id}>')):
             await ctx.send('Mention prefixes are reserved.')
             return
 
-        async with self.bot.db as conn:
-            await Prefix.insert(conn, guild=ctx.guild.id, prefix=prefix)
-        
-        self.bot.prefix_cache[ctx.guild.id].append(prefix)
+        try:
+            await self.bot.db.add_prefix(ctx.guild.id, prefix)
+        except asyncpg.UniqueViolationError:
+            await ctx.send('This prefix is already in this guild.')
+            return
 
         await ctx.send('\U0001f44c')
 
@@ -68,14 +54,10 @@ class Management(commands.Cog):
     @commands.has_guild_permissions(manage_guild=True)
     async def prefix_remove(self, ctx: Context, prefix: str):
         """Removes a prefix from the guild."""
-        prefixes = await self.get_prefixes(ctx.guild)  # type: ignore
+        prefixes = await self.bot.db.get_prefixes(ctx.guild.id)
         if prefix not in prefixes:
             await ctx.send('That prefix is not in the guild\'s prefix list.')
             return
 
-        async with self.bot.db as conn:
-            await Prefix.delete(conn, guild=ctx.guild.id, prefix=prefix)
-        
-        self.bot.prefix_cache[ctx.guild.id].remove(prefix)
-
+        await self.bot.db.del_prefix(ctx.guild.id, prefix)
         await ctx.send('\U0001F44C')
