@@ -22,10 +22,7 @@ class Context(commands.Context):
         if not guild:
             return False
 
-        async with self.bot.db as conn:
-            record: asyncpg.Record = await Guild.fetch_row(conn, guild=guild.id)
-
-        return record['owoify'] if record else False
+        return await self.bot.db.get_owoify(self.guild.id)
 
     async def send(
         self, content: str | None = None, dont_owo: bool = False, **kwargs

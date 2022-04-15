@@ -5,11 +5,14 @@ import pathlib
 from typing import Iterable
 
 import aiohttp
+import aioredis
 import asyncpg
 import discord
 import donphan
 from discord.ext import commands
 from donphan import MaybeAcquire
+
+from utils import Database
 
 from .context import Context
 from models import Guild, Prefix
@@ -33,18 +36,7 @@ async def get_prefix(bot: Bot, message: discord.Message) -> list[str]:
     if not message.guild:
         return commands.when_mentioned_or('?')(bot, message)
 
-    ret: list[str] = bot.prefix_cache.get(message.guild.id, [])
-    if not ret:
-        async with bot.db as conn:
-            records: Iterable[asyncpg.Record] = await Prefix.fetch(
-                conn, guild=message.guild.id
-            )
-
-        ret: list[str] = [r['prefix'] for r in records]
-        bot.prefix_cache[message.guild.id] = ret
-        if not ret:
-            ret.append('gh+')
-
+    ret: list[str] = await bot.db.get_prefixes(message.guild.id)
     return commands.when_mentioned_or(*ret)(bot, message)
 
 
@@ -56,7 +48,7 @@ class HelpCommand(commands.MinimalHelpCommand):
 class Bot(commands.Bot):
     session: aiohttp.ClientSession
     pool: asyncpg.Pool
-    db: MaybeAcquire
+    db: Database
     _kal_av_hash: int
 
     def __init__(self, *, config: dict[str, str]):
@@ -80,12 +72,9 @@ class Bot(commands.Bot):
                 print(f'Error loading {extension} - {err.__class__.__name__}: {err}')
 
         self.pool = await donphan.create_pool(self.config['database_dsn'])
-        self.db = MaybeAcquire(pool=self.pool)
+        redis = await aioredis.from_url(self.config['redis_dsn'], decode_responses=True)
+        self.db = Database(self.pool, redis)
         self.session = aiohttp.ClientSession()
-
-        async with self.db as conn:
-            await Prefix.create(conn, if_not_exists=True)
-            await Guild.create(conn, if_not_exists=True)
 
     async def try_user(self, user: int) -> discord.User:
         return self.get_user(user) or await self.fetch_user(user)

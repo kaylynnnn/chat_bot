@@ -3,3 +3,4 @@ git+https://github.com/Gorialis/jishaku.git
 donphan==4.9.2
 toml==0.10.2
 Pillow==9.0.1
+aioredis==2.0.1
