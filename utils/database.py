@@ -37,6 +37,11 @@ class Database:
 
     async def get_owoify(self, guild_id: int) -> bool:
         ret = await self.redis.get(f'{guild_id}:owoify')
+        if ret is None:
+            async with self.acquire_conn as conn:
+                row = await Guild.fetch_row(conn, guild=guild_id)
+            ret = row['owoify'] if row else False
+            await self.redis.set(f'{guild_id}:owoify', int(ret))
         return bool(int(ret))
 
     async def add_prefix(self, guild_id: int, prefix: str) -> None:
