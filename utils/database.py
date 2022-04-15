@@ -30,7 +30,7 @@ class Database:
             async with self.acquire_conn as conn:
                 records = await Prefix.fetch(conn, guild=guild_id)
             ret = [rec['prefix'] for rec in records] or ['gh+']
-            await self.redis.lpush(f'{guild_id}:prefix', *ret)
+            await self.redis.lpush(f'{guild_id}:prefix', ret)
         else:
             ret = [el for el in cached]
         return ret
