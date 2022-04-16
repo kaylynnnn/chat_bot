@@ -51,7 +51,7 @@ class Bot(commands.Bot):
     db: Database
     _kal_av_hash: int
 
-    def __init__(self, *, config: dict[str, str | list[str]]):
+    def __init__(self, *, config: dict[str, str | list[str | int]]):
         super().__init__(
             command_prefix=get_prefix,
             intents=INTENTS,
