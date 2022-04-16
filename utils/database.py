@@ -29,11 +29,11 @@ class Database:
         if not cached:
             async with self.acquire_conn as conn:
                 records = await Prefix.fetch(conn, guild=guild_id)
-            ret = [rec['prefix'] for rec in records] or ['gh+']
+            ret = [rec['prefix'] for rec in records]
             await self.redis.lpush(f'{guild_id}:prefix', *ret)
         else:
             ret = [el for el in cached]
-        return ret
+        return ret or ['gh+']
 
     async def get_owoify(self, guild_id: int) -> bool:
         ret = await self.redis.get(f'{guild_id}:owoify')
