@@ -52,9 +52,10 @@ class ErrorHandler(commands.Cog):
                     f'Author: {ctx.author.id}'
                 )
             )
+            tb_fmt = '\n'.join(traceback.format_tb(error.__traceback__))
             embed.add_field(
                 name='Traceback',
-                value=f'```py\n{traceback.format_tb(error.__traceback__)}```'
+                value=f'```py\n{tb_fmt}```'
             )
 
             await user.send(embed=embed)
