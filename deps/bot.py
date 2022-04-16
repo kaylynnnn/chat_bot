@@ -61,7 +61,6 @@ class Bot(commands.Bot):
         self.config = config
         self._once_ready = False
         self.event(self.on_once_ready)
-        self.prefix_cache: dict[int, list[str]] = {}
 
     async def setup_hook(self):
         for extension in EXTENSIONS:
