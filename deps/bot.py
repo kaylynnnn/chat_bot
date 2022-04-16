@@ -100,8 +100,8 @@ class Bot(commands.Bot):
     async def get_context(self, message: discord.Message, *, cls=Context):
         return await super().get_context(message, cls=cls)
 
-    def run(self, token: str | None = None, *, reconnect: bool = True) -> None:
-        super().run(token or self.config['token'], reconnect=reconnect)
+    async def start(self, token: str | None = None, *, reconnect: bool = True) -> None:
+        await super().start(token or self.config['token'], reconnect=reconnect)  # type: ignore
 
     async def close(self):
         await self.db.close()

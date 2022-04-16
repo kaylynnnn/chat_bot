@@ -1,14 +1,19 @@
+import asyncio
 from deps import Bot
 import toml
 
 
-def main():
+async def main():
     with open('config.toml') as fh:
         config = toml.load(fh)
 
     bot = Bot(config=config)
-    bot.run()
+    async with bot:
+        await bot.start()
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        pass
