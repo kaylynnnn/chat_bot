@@ -1,3 +1,4 @@
 token = ''
 database_dsn = ''
 redis_dsn = ''
+owner_ids = []

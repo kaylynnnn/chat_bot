@@ -51,11 +51,11 @@ class Bot(commands.Bot):
     db: Database
     _kal_av_hash: int
 
-    def __init__(self, *, config: dict[str, str]):
+    def __init__(self, *, config: dict[str, str | list[str]]):
         super().__init__(
             command_prefix=get_prefix,
             intents=INTENTS,
-            owner_ids={671777334906454026, 766953372309127168},
+            owner_ids=set(config['owner_ids']),
             help_command=HelpCommand(),
         )
         self.config = config
@@ -71,7 +71,7 @@ class Bot(commands.Bot):
             except Exception as err:
                 print(f'Error loading {extension} - {err.__class__.__name__}: {err}')
 
-        self.pool = await donphan.create_pool(self.config['database_dsn'])
+        self.pool = await donphan.create_pool(self.config['database_dsn'])  # type: ignore
         redis = await aioredis.from_url(self.config['redis_dsn'], decode_responses=True)
         self.db = Database(self.pool, redis)
         self.session = aiohttp.ClientSession()
