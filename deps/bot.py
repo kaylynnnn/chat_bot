@@ -104,6 +104,6 @@ class Bot(commands.Bot):
         super().run(token or self.config['token'], reconnect=reconnect)
 
     async def close(self):
-        await self.pool.close()
+        await self.db.close()
         await self.session.close()
         await super().close()
