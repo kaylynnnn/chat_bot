@@ -83,14 +83,20 @@ class General(commands.Cog):
             await conn.execute('SELECT 1;')
             db_end = time.perf_counter()
 
+        redis_start = time.perf_counter()
+        await self.bot.db.redis.ping()
+        redis_end = time.perf_counter()
+
         type_start = time.perf_counter()
         await ctx.trigger_typing()
         type_end = time.perf_counter()
 
-        message = f'''DB Latency: {round((db_end - db_start) * 1000, 2)} ms
-        Round Trip Latency: {round((type_end - type_start) * 1000, 2)} ms
-        Heartbeat Latency: {round(self.bot.latency * 1000, 2)} ms
-        '''
+        message = (
+            f'DB Latency: {round((db_end - db_start) * 1000, 2)} ms\n'
+            f'Redis Latency: {round((redis_end - redis_start) * 1000, 2)} ms\n'
+            f'Round Trip Latency: {round((type_end - type_start) * 1000, 2)} ms\n'
+            f'Heartbeat Latency: {round(self.bot.latency * 1000, 2)} ms'
+        )
 
         embed = discord.Embed(description=textwrap.dedent(message))
         await ctx.send(embed=embed)
