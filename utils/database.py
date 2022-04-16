@@ -46,9 +46,7 @@ class Database:
 
     async def add_prefix(self, guild_id: int, prefix: str) -> None:
         async with self.acquire_conn as conn:
-            await Prefix.insert(
-                conn, guild=guild_id, prefix=prefix
-            )
+            await Prefix.insert(conn, guild=guild_id, prefix=prefix)
         await self.redis.lpush(f'{guild_id}:prefix', prefix)
 
     async def del_prefix(self, guild_id: int, prefix: str) -> None:
@@ -59,9 +57,6 @@ class Database:
     async def set_owoify(self, guild_id: int, value: bool) -> None:
         async with self.acquire_conn as conn:
             await Guild.insert(
-                conn,
-                guild=guild_id,
-                update_on_conflict=(Guild.guild,),
-                owoify=value
+                conn, guild=guild_id, update_on_conflict=(Guild.guild,), owoify=value
             )
         await self.redis.set(f'{guild_id}:owoify', int(value))
