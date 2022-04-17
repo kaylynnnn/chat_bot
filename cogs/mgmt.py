@@ -20,7 +20,7 @@ class Management(commands.Cog):
     @commands.has_guild_permissions(manage_guild=True)
     async def owoify(self, ctx: Context):
         """Toggles owoify in current guild."""
-        current = await self.bot.db.get_owoify(ctx.guild.id)
+        current = await ctx.db.get_owoify(ctx.guild.id)
         await ctx.db.set_owoify(ctx.guild.id, not current)
         await ctx.send('\U0001f44c')
 
