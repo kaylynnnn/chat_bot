@@ -1,11 +1,7 @@
-from typing import Iterable
-
 import asyncpg
 import discord
 from deps import Bot, Context
 from discord.ext import commands
-
-from models import Guild, Prefix
 
 
 async def setup(bot: Bot):

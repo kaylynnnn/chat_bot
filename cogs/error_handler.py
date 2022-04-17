@@ -1,4 +1,5 @@
 import traceback
+
 import discord
 from deps import Bot, Context
 from discord.ext import commands
@@ -50,13 +51,10 @@ class ErrorHandler(commands.Cog):
                     f'Guild: {getattr(ctx.guild, "id", "DMs")}\n'
                     f'Channel: {getattr(ctx.channel, "id", "DMs")}\n'
                     f'Author: {ctx.author.id}'
-                )
+                ),
             )
             tb_fmt = '\n'.join(traceback.format_tb(error.__traceback__))
-            embed.add_field(
-                name='Traceback',
-                value=f'```py\n{tb_fmt}```'
-            )
+            embed.add_field(name='Traceback', value=f'```py\n{tb_fmt}```')
 
             await user.send(embed=embed)
             raise error

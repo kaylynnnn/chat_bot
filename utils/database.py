@@ -1,9 +1,9 @@
 import asyncio
+
 import aioredis
 import asyncpg
 from donphan import MaybeAcquire
 from models import Guild, Prefix
-
 
 __all__ = ('Database',)
 

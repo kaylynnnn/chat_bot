@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import os
 import pathlib
-from typing import Iterable
 
 import aiohttp
 import aioredis
@@ -10,12 +9,9 @@ import asyncpg
 import discord
 import donphan
 from discord.ext import commands
-from donphan import MaybeAcquire
-
 from utils import Database
 
 from .context import Context
-from models import Guild, Prefix
 
 os.environ['JISHAKU_NO_UNDERSCORE'] = 'True'
 os.environ['JISHAKU_NO_DM_TRACEBACK'] = 'True'

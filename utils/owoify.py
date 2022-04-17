@@ -3,7 +3,6 @@ import re
 
 import discord
 
-
 __all__ = (
     'owoify_text',
     'owoify_embed',
