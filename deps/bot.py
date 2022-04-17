@@ -40,11 +40,6 @@ async def get_prefix(bot: Bot, message: discord.Message) -> list[str]:
     return commands.when_mentioned_or(*ret)(bot, message)
 
 
-class HelpCommand(commands.MinimalHelpCommand):
-    def get_destination(self) -> discord.abc.Messageable:
-        return self.context
-
-
 class Bot(commands.Bot):
     session: aiohttp.ClientSession
     pool: asyncpg.Pool
@@ -56,7 +51,7 @@ class Bot(commands.Bot):
             command_prefix=get_prefix,
             intents=INTENTS,
             owner_ids=set(config['owner_ids']),
-            help_command=HelpCommand(),
+            help_command=commands.MinimalHelpCommand(),
         )
         self.config = config
         self._once_ready = False
