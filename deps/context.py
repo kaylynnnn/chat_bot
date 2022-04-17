@@ -1,11 +1,9 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-import asyncpg
 import discord
 
 from discord.ext import commands
-from models import Guild
 
 from utils import owoify_embed, owoify_text
 
@@ -17,6 +15,10 @@ __all__ = ('Context',)
 
 class Context(commands.Context):
     bot: Bot
+
+    @property
+    def db(self):
+        return self.bot.db
 
     async def _check_owoify(self, guild: discord.Guild | None) -> bool:
         if not guild:

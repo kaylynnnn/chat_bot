@@ -21,7 +21,7 @@ class Management(commands.Cog):
     async def owoify(self, ctx: Context):
         """Toggles owoify in current guild."""
         current = await self.bot.db.get_owoify(ctx.guild.id)
-        await self.bot.db.set_owoify(ctx.guild.id, not current)
+        await ctx.db.set_owoify(ctx.guild.id, not current)
         await ctx.send('\U0001f44c')
 
     @commands.group(invoke_without_command=True)
@@ -43,7 +43,7 @@ class Management(commands.Cog):
             return
 
         try:
-            await self.bot.db.add_prefix(ctx.guild.id, prefix)
+            await ctx.db.add_prefix(ctx.guild.id, prefix)
         except asyncpg.UniqueViolationError:
             await ctx.send('This prefix is already in this guild.')
             return
@@ -55,10 +55,10 @@ class Management(commands.Cog):
     @commands.has_guild_permissions(manage_guild=True)
     async def prefix_remove(self, ctx: Context, prefix: str):
         """Removes a prefix from the guild."""
-        prefixes = await self.bot.db.get_prefixes(ctx.guild.id)
+        prefixes = await ctx.db.get_prefixes(ctx.guild.id)
         if prefix not in prefixes:
             await ctx.send('That prefix is not in the guild\'s prefix list.')
             return
 
-        await self.bot.db.del_prefix(ctx.guild.id, prefix)
+        await ctx.db.del_prefix(ctx.guild.id, prefix)
         await ctx.send('\U0001F44C')
